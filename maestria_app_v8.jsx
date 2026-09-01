@@ -47,9 +47,62 @@ const getToday=()=>new Date().toLocaleDateString("en-GB").split("/").reverse().j
 const TODAY=getToday();
 
 // Storage
+// ══════════════════════════════════════════════
+// BASE DE DADOS — Supabase
+// 1. Cria conta gratuita em supabase.com
+// 2. Cria projecto novo
+// 3. Vai a SQL Editor e corre:
+//    CREATE TABLE user_data (
+//      key TEXT PRIMARY KEY,
+//      value TEXT,
+//      updated_at TIMESTAMP DEFAULT NOW()
+//    );
+//    ALTER TABLE user_data ENABLE ROW LEVEL SECURITY;
+//    CREATE POLICY "allow_all" ON user_data FOR ALL USING (true) WITH CHECK (true);
+// 4. Vai a Settings → API e copia URL e anon key
+// ══════════════════════════════════════════════
+//const SUPABASE_URL = "COLOCA_AQUI_O_TUA_URL"; // ex: https://xyzxyz.supabase.co
+//const SUPABASE_KEY = "sb_publishable_yruaunvTPuEJXkKDESAw9w_TABt3g8j";
+
+const SUPABASE_URL = "https://faapbtkhkikggxwojhfk.supabase.co";
+const SUPABASE_KEY = "sb_publishable_yruaunvTPuEJXkKDESAw9w_TABt3g8j";
+
+
+const _supabase_ready = SUPABASE_URL !== "COLOCA_AQUI_O_TUA_URL";
+
 const db={
-  async get(k){try{const r=await window.storage.get(k,false);return r?JSON.parse(r.value):null;}catch{return null;}},
-  async set(k,v){try{await window.storage.set(k,JSON.stringify(v),false);}catch{}},
+  async get(k){
+    if(!_supabase_ready){
+      try{const v=localStorage.getItem('mh26:'+k);return v?{value:v}:null;}catch{return null;}
+    }
+    try{
+      const res=await fetch(
+        SUPABASE_URL+'/rest/v1/user_data?key=eq.'+encodeURIComponent('mh26:'+k)+'&select=value',
+        {headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}}
+      );
+      const d=await res.json();
+      if(d&&d.length>0)return{value:d[0].value};
+      return null;
+    }catch{return null;}
+  },
+  async set(k,v){
+    if(!_supabase_ready){
+      try{localStorage.setItem('mh26:'+k,v);}catch{}
+      return;
+    }
+    try{
+      await fetch(SUPABASE_URL+'/rest/v1/user_data',{
+        method:'POST',
+        headers:{
+          'apikey':SUPABASE_KEY,
+          'Authorization':'Bearer '+SUPABASE_KEY,
+          'Content-Type':'application/json',
+          'Prefer':'resolution=merge-duplicates'
+        },
+        body:JSON.stringify({key:'mh26:'+k,value:v,updated_at:new Date().toISOString()})
+      });
+    }catch{}
+  },
 };
 const _cache={};
 const _deepLink={};
@@ -61,8 +114,8 @@ function useStorage(key,def){
   return[val,save,rdy];
 }
 
-function getFase(){const s=new Date("2026-07-01"),n=new Date(),m=["Jul","Ago","Set","Out","Nov","Dez"];return m[Math.min(Math.max(0,Math.floor((n-s)/(30.5*864e5))),m.length-1)]||"Jul";}
-const FASES={Jul:{fase:"Fundação",mat:"Kegel Lento 10s×10 + 50 Kegel Rápidos + Respiração 5min",not:"Sem prática avançada — identificar o músculo PC"},Ago:{fase:"Consistência",mat:"Kegel 3 tipos (8min) + Mula Bandha 50× + Respiração 4-7-8",not:"Edging Fase 1 — 3 bordas ao nível 7"},Set:{fase:"Optimização",mat:"Kegel + Mula Bandha + Respiração 4-7-8 (15min totais)",not:"Edging Fase 2 — bordas ao nível 8"},Out:{fase:"Escala",mat:"Órbita Microcósmica 10min + Kegel + Mula Bandha",not:"1.ª tentativa de Orgasmo Seco — MARCO"},Nov:{fase:"Liderança",mat:"Órbita + Respiração Circular + Kegel (15min)",not:"Orgasmos secos consistentes"},Dez:{fase:"Liberdade",mat:"Órbita + Meditação Sexual (15min)",not:"2-3 orgasmos secos por sessão"}};
+function getFase(){const s=new Date("2026-09-01"),n=new Date(),m=["Set","Out","Nov","Dez","Jan","Fev","Mar"];return m[Math.min(Math.max(0,Math.floor((n-s)/(30.5*864e5))),m.length-1)]||"Set";}
+const FASES={Set:{fase:"Fundação",mat:"Kegel Lento 10s×10 + 50 Rápidos + Respiração 4-7-8 5min",not:"Identificar o músculo PC — sem prática avançada"},Out:{fase:"Consistência",mat:"Kegel 3 tipos (8min) + Mula Bandha 50× + Respiração 4-7-8",not:"Edging Fase 1 — 3 bordas ao nível 7"},Nov:{fase:"Optimização",mat:"Kegel + Mula Bandha + Respiração 4-7-8 (15min totais)",not:"Edging Fase 2 — bordas ao nível 8"},Dez:{fase:"Escala",mat:"Órbita Microcósmica 10min + Kegel + Mula Bandha",not:"1.ª tentativa de Orgasmo Seco — MARCO"},Jan:{fase:"Liderança",mat:"Órbita + Respiração Circular + Kegel (15min)",not:"Orgasmos secos consistentes"},Fev:{fase:"Liberdade",mat:"Órbita + Meditação Sexual (15min)",not:"2-3 orgasmos secos por sessão"},Mar:{fase:"Maestria",mat:"Órbita + Meditação Sexual + Chakras (20min)",not:"Transmutação plena — orgasmo corporal"}};
 
 const PILARES=[{id:"p1",nome:"Físico",Icon:Dumbbell,tab:"treino"},{id:"p2",nome:"Financeiro",Icon:PiggyBank,tab:"financeiro"},{id:"p3",nome:"TMI",Icon:Briefcase,tab:"p3"},{id:"p4",nome:"Sexual",Icon:Flame,tab:"pilar4"},{id:"p5",nome:"Mental",Icon:BookOpen,tab:"p5"},{id:"p6",nome:"Social",Icon:Users,tab:"p6"},{id:"p7",nome:"Bem-Estar",Icon:Leaf,tab:"p7"}];
 
@@ -82,7 +135,7 @@ const DIA_PADRAO_FULL = {
   SEG: [
     {h:"09:00",dur:"0h30",bloco:"Acordar + Hidratação",desc:"500ml água com limão. Sem telemóvel 30min. Sol 5min no rosto. Respiração profunda.",pilares:"P7",tipo:"espiritual",nav:{sub:"p7",dl:{tab:"sono"}}},
     {h:"09:15",dur:"0h20",bloco:"Devocional + Bíblia",desc:"YouVersion. Ler a passagem do dia sem pressa. Sublinhar 1 versículo. Oração de intenção: TMI de hoje + 1 qualidade a incarnar.",pilares:"P5",tipo:"espiritual",nav:{sub:"p5",dl:{tab:"d"}}},
-    {h:"09:35",dur:"0h15",bloco:"Pilar 4 — Kegel + Respiração Tântrica",desc:"PC 3×30 contrações lentas + Respiração Tântrica Microcósmica 5min. Activação AMPK + circulação pélvica.",pilares:"P4",tipo:"sexual",nav:{sub:"pilar4",dl:{ex:1}}},
+    {h:"09:35",dur:"0h15",bloco:"Pilar 4 — Kegel + Respiração Tântrica",desc:"PC 3×30 contrações lentas + Respiração Tântrica Microcósmica 5min. Circulação pélvica e energia matinal.",pilares:"P4",tipo:"sexual",nav:{sub:"pilar4",dl:{ex:1}}},
     {h:"09:50",dur:"0h30",bloco:"Leitura Dinâmica (SQ3R)",desc:"Livro estratégico do mês. Survey→Question→Read→Recite→Review. 1 insight accionável no Diário.",pilares:"P5",tipo:"espiritual",nav:{sub:"biblioteca",dl:{}}},
     {h:"10:20",dur:"0h10",bloco:"Meditação 4 Tempos",desc:"Gratidão (3 específicas) → Visualização TMI executada → Identidade Mar 2027 → 30s silêncio.",pilares:"P5",tipo:"espiritual",nav:{sub:"p5",dl:{tab:"m"}}},
     {h:"10:30",dur:"0h15",bloco:"Diário de Bordo",desc:"% adesão ontem | saldo financeiro | TMI de hoje (o quê+quando+porquê) | 1 insight | 3 gratidões.",pilares:"P5",tipo:"espiritual",nav:{sub:"diario",dl:{modo:"rapido"}}},
@@ -187,7 +240,7 @@ const DIA_PADRAO_FULL = {
   SAB: [
     {h:"09:00",dur:"1h00",bloco:"Acordar livre + Hidratação calma",desc:"Sem alarme. 500ml água. Sol. Sem telemóvel 45min. Deixar o corpo acordar naturalmente.",pilares:"P7",tipo:"espiritual",nav:{sub:"p7",dl:{tab:"sono"}}},
     {h:"10:00",dur:"0h30",bloco:"Devocional Alargado",desc:"Bíblia 20min sem pressa. Versículo + reflexão escrita. Oração de intenção para o fim-de-semana.",pilares:"P5",tipo:"espiritual",nav:{sub:"p5",dl:{tab:"d"}}},
-    {h:"10:30",dur:"0h20",bloco:"Pilar 4 Alargado — Órbita + Kegel",desc:"Órbita Microcósmica 10min (Out+) ou Meditação 4 Tempos 20min (Jul-Set). Sem pressa.",pilares:"P4",tipo:"sexual",nav:{sub:"pilar4",dl:{ex:4}}},
+    {h:"10:30",dur:"0h20",bloco:"Pilar 4 Alargado — Órbita + Kegel",desc:"Órbita Microcósmica 10min (Dez+) ou Meditação 4 Tempos 20min (Set-Nov). Sem pressa.",pilares:"P4",tipo:"sexual",nav:{sub:"pilar4",dl:{ex:4}}},
     {h:"10:50",dur:"0h30",bloco:"Meditação + Leitura livre",desc:"Meditação 20min completa. Ler o que quiser — não tem que ser o livro do mês.",pilares:"P5",tipo:"espiritual",nav:{sub:"p5",dl:{tab:"m"}}},
     {h:"11:30",dur:"1h30",bloco:"Pequeno-Almoço longo + Café",desc:"Refeição saboreada. Sem ecrã. Sem pressa. É o pequeno-almoço mais relaxado da semana.",pilares:"P1",tipo:"espiritual",nav:{sub:"dieta",dl:{tab:"r"}}},
     {h:"13:00",dur:"3h00",bloco:"Lazer / Hobby Criativo / Social",desc:"Música, arte, cozinha, passeio, amigos. ZERO trabalho. ZERO scroll sem intenção. Lazer activo restaura.",pilares:"P6/P7",tipo:"social",nav:null},
@@ -202,7 +255,7 @@ const DIA_PADRAO_FULL = {
   DOM: [
     {h:"08:30",dur:"1h00",bloco:"Acordar natural + Hidratação",desc:"Sem alarme. Deixar o corpo acordar. 500ml água. Manhã lenta.",pilares:"P7",tipo:"espiritual",nav:{sub:"p7",dl:{tab:"sono"}}},
     {h:"09:30",dur:"0h30",bloco:"Devocional Alargado + Intenção Semanal",desc:"Bíblia 20min. Versículo + reflexão. Oração de intenção para a SEMANA que começa.",pilares:"P5",tipo:"espiritual",nav:{sub:"p5",dl:{tab:"d"}}},
-    {h:"10:00",dur:"0h20",bloco:"Pilar 4 Alargado — Órbita + Kegel",desc:"Órbita Microcósmica 10min (Out+) ou Meditação 4 Tempos 20min (Jul-Set).",pilares:"P4",tipo:"sexual",nav:{sub:"pilar4",dl:{ex:4}}},
+    {h:"10:00",dur:"0h20",bloco:"Pilar 4 Alargado — Órbita + Kegel",desc:"Órbita Microcósmica 10min (Dez+) ou Meditação 4 Tempos 20min (Set-Nov).",pilares:"P4",tipo:"sexual",nav:{sub:"pilar4",dl:{ex:4}}},
     {h:"10:20",dur:"0h30",bloco:"Meditação Completa + Visualização Semanal",desc:"Meditação 30min — foco especial na visualização da semana inteira já executada com sucesso.",pilares:"P5",tipo:"espiritual",nav:{sub:"p5",dl:{tab:"m"}}},
     {h:"10:50",dur:"1h00",bloco:"Pequeno-Almoço longo + Leitura",desc:"Refeição saboreada. Ler o que quiser. Sem pressa.",pilares:"P1",tipo:"espiritual",nav:{sub:"dieta",dl:{tab:"r"}}},
     {h:"12:00",dur:"2h00",bloco:"Lazer / Passeio / Social",desc:"Lazer activo. Caminhar ao ar livre, parque, amigos, mercado. Recarregar.",pilares:"P6/P7",tipo:"social",nav:null},
@@ -257,14 +310,14 @@ const PILAR4_VIDEOS = {
 };
 
 const P4EX=[
-  {id:1,nome:"Kegel Avançado",bloco:"05:50-06:00",img:"ex1",etapas:[{t:"Posição",s:10,d:"Deitar (Jul-Set) → sentado (Out+) → de pé (Dez+)"},{t:"Kegel Lento",s:180,d:"Contrair ao máximo. Jul:10s×10 · Ago:15s×10 · Set:20s×8"},{t:"Kegel Rápido",s:120,d:"60-80 flicks/min — reflexo anti-ejaculação"},{t:"Progressivo",s:120,d:"Escada 20→100%, 2s cada nível, 5 reps"},{t:"Mula Bandha",s:180,d:"Expirar, puxar períneo para CIMA. 50 reps"}]},
+  {id:1,nome:"Kegel Avançado",bloco:"05:50-06:00",img:"ex1",etapas:[{t:"Posição",s:10,d:"Deitar (Set-Nov) → sentado (Dez+) → de pé (Mar+)"},{t:"Kegel Lento",s:180,d:"Contrair ao máximo. Jul:10s×10 · Ago:15s×10 · Set:20s×8"},{t:"Kegel Rápido",s:120,d:"60-80 flicks/min — reflexo anti-ejaculação"},{t:"Progressivo",s:120,d:"Escada 20→100%, 2s cada nível, 5 reps"},{t:"Mula Bandha",s:180,d:"Expirar, puxar períneo para CIMA. 50 reps"}]},
   {id:2,nome:"Respiração 4-7-8",bloco:"Matinal",img:"ex2",ciclos:3,etapas:[{t:"Inspirar",s:4,d:"Nariz, abdómen expande"},{t:"Reter",s:7,d:"Mula Bandha activado"},{t:"Expirar",s:8,d:"Boca — activa nervo vago"}]},
   {id:3,nome:"Mula Bandha",bloco:"Matinal",img:"ex3",etapas:[{t:"Expirar",s:5,d:"Esvaziar completamente"},{t:"Contrair",s:5,d:"Como parar a urina"},{t:"Puxar CIMA",s:10,d:"Energia ascendente"},{t:"Relaxar",s:5,d:"Inspirar lentamente"}]},
-  {id:4,nome:"Órbita Microcósmica",bloco:"Matinal (Out+)",img:"ex4",etapas:[{t:"Ren Mai",s:60,d:"Períneo → Umbigo → Coração → Garganta"},{t:"Du Mai",s:60,d:"Cóccix → Lombar → Nuca → Coroa"},{t:"Fechar",s:10,d:"Língua toca o palato"}]},
+  {id:4,nome:"Órbita Microcósmica",bloco:"Matinal (Dez+)",img:"ex4",etapas:[{t:"Ren Mai",s:60,d:"Períneo → Umbigo → Coração → Garganta"},{t:"Du Mai",s:60,d:"Cóccix → Lombar → Nuca → Coroa"},{t:"Fechar",s:10,d:"Língua toca o palato"}]},
   {id:5,nome:"Edging",bloco:"Nocturno 22:50",img:"ex5",aviso:"PARAR antes de 9.5 — ponto de não-retorno",etapas:[{t:"Subir até 7-8",s:300,d:"Escala 1-10. Zona alvo 7-8. NUNCA 9.5+"},{t:"Recuar",s:20,d:"Mula Bandha + respiração 4-7-8"},{t:"Repetir",s:300,d:"4 bordas por sessão"}]},
-  {id:6,nome:"Orgasmo Seco",bloco:"Nocturno (Out+)",img:"ex6",etapas:[{t:"Excitação",s:60,d:"Sem Mula Bandha = ejaculação"},{t:"Janela crítica",s:2,d:"1-2s — activar Mula Bandha AQUI"},{t:"Sustento",s:30,d:"Contracções do PC sem ejaculação"}]},
+  {id:6,nome:"Orgasmo Seco",bloco:"Nocturno (Dez+)",img:"ex6",etapas:[{t:"Excitação",s:60,d:"Sem Mula Bandha = ejaculação"},{t:"Janela crítica",s:2,d:"1-2s — activar Mula Bandha AQUI"},{t:"Sustento",s:30,d:"Contracções do PC sem ejaculação"}]},
   {id:7,nome:"Meditação Chakras",bloco:"Segunda 08:40",img:"ex7",etapas:[{t:"Muladhara",s:60,d:"Raiz — energia sexual"},{t:"Svadhisthana",s:60,d:"Sacral — prazer"},{t:"Subida",s:180,d:"Energia ascende pela coluna"}]},
-  {id:8,nome:"Retenção de Sémen",bloco:"Avançado (Out+)",img:"ex8",etapas:[{t:"Tantra",s:15,d:"Êxtase como caminho espiritual"},{t:"Tao",s:15,d:"Conservação e longevidade"},{t:"Prática",s:60,d:"Ejaculação é escolha, não reflexo"}]},
+  {id:8,nome:"Retenção de Sémen",bloco:"Avançado (Dez+)",img:"ex8",etapas:[{t:"Tantra",s:15,d:"Êxtase como caminho espiritual"},{t:"Tao",s:15,d:"Conservação e longevidade"},{t:"Prática",s:60,d:"Ejaculação é escolha, não reflexo"}]},
 ];
 const RES_EX=[
   {id:"r1",nome:"Hip Thrust Resistência",img:"res_01",quando:"3×/sem após treino",desc:"Peso LEVE. Muitas reps. Biomecânica do impulso sexual.",prog:["Sem 1-2: 3×30 reps","Sem 3-4: 3×50 reps","Sem 5-6: 4×60 reps","Sem 7-8: 2min contínuos","Sem 11-12: 10min"]},
@@ -293,7 +346,7 @@ const REFEICOES_FOLGA=[
    det:"3 ovos mexidos com tomate + 2 fatias pão integral com manteiga amendoim OU 1/2 abacate + 1 banana + café ou chá verde sem açúcar. Comer sentado, sem ecrã, em 20-30min. Dia de folga = recarregar mentalmente também.",
    comp:"3 ovos + 2 fatias pão integral + abacate/amendoim + banana + café"},
   {nome:"Almoço Relaxado",h:"13:00",kcal:700,
-   det:"200g carne magra (bife, frango, peru) ou peixe + 150g arroz ou massa integral + salada grande (alface, tomate, pepino, azeitonas) + 2 col. sopa azeite + sumo de limão. Pode comer fora (£12 máx Jul-Set) ou em casa.",
+   det:"200g carne magra (bife, frango, peru) ou peixe + 150g arroz ou massa integral + salada grande (alface, tomate, pepino, azeitonas) + 2 col. sopa azeite + sumo de limão. Pode comer em casa ou fora (máx £12).",
    comp:"200g carne/peixe + 150g arroz/massa + salada grande + azeite"},
   {nome:"Snack da Tarde",h:"16:00",kcal:300,
    det:"1 scoop Whey em 250ml leite ou água + 1 fruta grande (maçã, laranja, kiwi×2) + 30g nozes ou amêndoas. Alternativa: iogurte grego 200g + mel + 30g granola sem açúcar.",
@@ -302,9 +355,9 @@ const REFEICOES_FOLGA=[
    det:"150g proteína variada + legumes abundantes (300g) + batata-doce ou arroz (150g) + azeite. Dia de folga é o melhor para variar a proteína: salmão, bacalhau, cordeiro magro. Magnésio 300mg ao deitar.",
    comp:"150g proteína variada + 300g legumes + 150g batata-doce + azeite"},
 ];
-const SUPLS=[{n:"Whey Isolado",d:"20-40g",t:"Pós-treino + pós-pedalada",c:"E"},{n:"Creatina",d:"5g/dia",t:"Qualquer hora",c:"E"},{n:"Maltodextrina",d:"40-60g",t:"Pré e durante ciclismo",c:"E"},{n:"Vitamina D3+K2",d:"2.000-4.000 UI",t:"Com refeição gorda",c:"E"},{n:"Ferro+Vitamina C",d:"Conforme exames",t:"Com refeição, sem café",c:"E"},{n:"Multivitamínico",d:"1×/dia",t:"Com refeição principal",c:"E"},{n:"L-Citrulina",d:"6-8g",t:"Pré-treino 30-60min",c:"I"}];
-const LIVROS=[{mes:"Jul",titulo:"Pai Rico, Pai Pobre",autor:"Robert Kiyosaki",tema:"Activos vs Passivos",link:"https://www.amazon.co.uk/Rich-Dad-Poor-Teach-Middle/dp/1612680194"},{mes:"Ago",titulo:"O Homem Mais Rico da Babilónia",autor:"George S. Clason",tema:"Pagar-se primeiro",link:"https://www.amazon.co.uk/Richest-Man-Babylon-George-Clason/dp/0451205367"},{mes:"Set",titulo:"Total Money Makeover",autor:"Dave Ramsey",tema:"7 Baby Steps",link:"https://www.amazon.co.uk/Total-Money-Makeover-Financial-Fitness/dp/0785263837"},{mes:"Out",titulo:"Investir Para Dummies (UK)",autor:"Tony Levene",tema:"ETFs e ISA básicos",link:"https://www.amazon.co.uk/Investing-Dummies-Tony-Levene/dp/0470510226"},{mes:"Nov",titulo:"O Investidor Inteligente",autor:"Benjamin Graham",tema:"Value Investing",link:"https://www.amazon.co.uk/Intelligent-Investor-Definitive-Investing-Essentials/dp/0060555661"},{mes:"Dez",titulo:"Psicologia do Dinheiro",autor:"Morgan Housel",tema:"Comportamento financeiro",link:"https://www.amazon.co.uk/Psychology-Money-Timeless-lessons-happiness/dp/0857197681"},{mes:"Jan",titulo:"Dinheiro: Domine o Jogo",autor:"Tony Robbins",tema:"Liberdade financeira",link:"https://www.amazon.co.uk/Money-Master-Game-Financial-Freedom/dp/1471143015"},{mes:"Fev",titulo:"Segredos da Mente Milionária",autor:"T. Harv Eker",tema:"Mindset de riqueza",link:"https://www.amazon.co.uk/Secrets-Millionaire-Mind-Mastering-Wealth/dp/0060763280"},{mes:"Mar",titulo:"Síntese Anual",autor:"—",tema:"Princípios pessoais",link:null}];
-const MARCOS=[{n:0,v:228,m:"Jul"},{n:1,v:500,m:"Ago"},{n:2,v:1500,m:"Set"},{n:3,v:3000,m:"Nov"},{n:4,v:5650,m:"Mar"}];
+const SUPLS=[{n:"Whey Isolado",d:"20-40g",t:"Pós-treino + pós-dia ativo",c:"E"},{n:"Creatina",d:"5g/dia",t:"Qualquer hora",c:"E"},{n:"Maltodextrina",d:"40-60g",t:"Pré e durante trabalho",c:"E"},{n:"Vitamina D3+K2",d:"2.000-4.000 UI",t:"Com refeição gorda",c:"E"},{n:"Ferro+Vitamina C",d:"Conforme exames",t:"Com refeição, sem café",c:"E"},{n:"Multivitamínico",d:"1×/dia",t:"Com refeição principal",c:"E"},{n:"L-Citrulina",d:"6-8g",t:"Pré-treino 30-60min",c:"I"}];
+const LIVROS=[{mes:"Set",titulo:"Pai Rico, Pai Pobre",autor:"Robert Kiyosaki",tema:"Activos vs Passivos",link:"https://www.amazon.co.uk/Rich-Dad-Poor-Teach-Middle/dp/1612680194"},{mes:"Out",titulo:"O Homem Mais Rico da Babilónia",autor:"George S. Clason",tema:"Pagar-se primeiro",link:"https://www.amazon.co.uk/Richest-Man-Babylon-George-Clason/dp/0451205367"},{mes:"Set",titulo:"Total Money Makeover",autor:"Dave Ramsey",tema:"7 Baby Steps",link:"https://www.amazon.co.uk/Total-Money-Makeover-Financial-Fitness/dp/0785263837"},{mes:"Out",titulo:"Investir Para Dummies (UK)",autor:"Tony Levene",tema:"ETFs e ISA básicos",link:"https://www.amazon.co.uk/Investing-Dummies-Tony-Levene/dp/0470510226"},{mes:"Nov",titulo:"O Investidor Inteligente",autor:"Benjamin Graham",tema:"Value Investing",link:"https://www.amazon.co.uk/Intelligent-Investor-Definitive-Investing-Essentials/dp/0060555661"},{mes:"Dez",titulo:"Psicologia do Dinheiro",autor:"Morgan Housel",tema:"Comportamento financeiro",link:"https://www.amazon.co.uk/Psychology-Money-Timeless-lessons-happiness/dp/0857197681"},{mes:"Jan",titulo:"Dinheiro: Domine o Jogo",autor:"Tony Robbins",tema:"Liberdade financeira",link:"https://www.amazon.co.uk/Money-Master-Game-Financial-Freedom/dp/1471143015"},{mes:"Fev",titulo:"Segredos da Mente Milionária",autor:"T. Harv Eker",tema:"Mindset de riqueza",link:"https://www.amazon.co.uk/Secrets-Millionaire-Mind-Mastering-Wealth/dp/0060763280"},{mes:"Mar",titulo:"Síntese Anual",autor:"—",tema:"Princípios pessoais",link:null}];
+const MARCOS=[{n:0,v:228,m:"Set"},{n:1,v:500,m:"Out"},{n:2,v:1500,m:"Set"},{n:3,v:3000,m:"Nov"},{n:4,v:5650,m:"Mar"}];
 const FIN_CATS=["Alimentação","Suplementos","Bicicleta","Habitação","Lazer","Outros"];
 const DEV_P=["Abrir o plano de leitura (YouVersion)","Ler a passagem do dia, sem pressa","Sublinhar 1 versículo que ressoa hoje","Oração de intenção: TMI do dia + 1 qualidade a incarnar","SEM telemóvel durante todo o bloco"];
 const MED_E=[{t:"Gratidão",s:90,d:"3 coisas específicas"},{t:"Visualização",s:90,d:"TMI de hoje já executada"},{t:"Identidade",s:90,d:"Quem serei daqui a 12 meses?"},{t:"Silêncio",s:30,d:"Zero pensamento dirigido"}];
@@ -1357,7 +1410,7 @@ function P6(){
       </Card>
       <Card>
         <L up style={{marginBottom:8}}>O que conta como interacção de alto valor?</L>
-        {["Conversa real com intenção (mínimo 10 minutos)","Não conta: delivery, mensagem passiva, scroll","Conta: mentoria, conversa de cliente, networking, parceria","Regra: avança um objectivo específico"].map((p,i)=><T key={i} sz={12} c={TS} style={{marginBottom:4}}>• {p}</T>)}
+        {["Conversa real com intenção (mínimo 10 minutos)","Não conta: babysitting, mensagem passiva, scroll","Conta: mentoria, conversa de cliente, networking, parceria","Regra: avança um objectivo específico"].map((p,i)=><T key={i} sz={12} c={TS} style={{marginBottom:4}}>• {p}</T>)}
       </Card>
     </>}
 
@@ -1451,7 +1504,7 @@ function P7(){
       </Card>}
     </Col>}
     {tab==="foam"&&<Col style={{gap:12}}>
-      <T sz={13} c={TS}>Guia específico para ciclistas. 5 zonas essenciais após 11h de pedalada.</T>
+      <T sz={13} c={TS}>Guia específico após um dia ativo. 5 zonas essenciais após 11h de dia ativo.</T>
       <Timer etapas={FOAM_ZONAS.map(z=>({t:z.nome,s:z.dur,d:z.desc}))} color={A}/>
     </Col>}
   </Col>;
@@ -1524,7 +1577,7 @@ function Diario(){
 // ============================================================
 function Biblioteca(){
   const A=ac("biblioteca");
-  const [mes,setMes]=useState("Jul");
+  const [mes,setMes]=useState("Set");
   const [nota,setNota]=useStorage(`bk2:${mes}`,"");
   const l=LIVROS.find(x=>x.mes===mes);
   return <Col style={{gap:16}}>

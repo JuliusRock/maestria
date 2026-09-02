@@ -61,11 +61,11 @@ const TODAY=getToday();
 //    CREATE POLICY "allow_all" ON user_data FOR ALL USING (true) WITH CHECK (true);
 // 4. Vai a Settings → API e copia URL e anon key
 // ══════════════════════════════════════════════
-//const SUPABASE_URL = "COLOCA_AQUI_O_TUA_URL"; // ex: https://xyzxyz.supabase.co
-//const SUPABASE_KEY = "sb_publishable_yruaunvTPuEJXkKDESAw9w_TABt3g8j";
+const SUPABASE_URL = "COLOCA_AQUI_O_TUA_URL"; // ex: https://xyzxyz.supabase.co
+const SUPABASE_KEY = "COLOCA_AQUI_O_TEU_KEY";
 
-const SUPABASE_URL = "https://faapbtkhkikggxwojhfk.supabase.co";
-const SUPABASE_KEY = "sb_publishable_yruaunvTPuEJXkKDESAw9w_TABt3g8j";
+//const SUPABASE_URL = "https://faapbtkhkikggxwojhfk.supabase.co";
+//const SUPABASE_KEY = "sb_publishable_yruaunvTPuEJXkKDESAw9w_TABt3g8j";
 
 
 const _supabase_ready = SUPABASE_URL !== "COLOCA_AQUI_O_TUA_URL";

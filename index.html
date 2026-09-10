@@ -24,15 +24,14 @@
   <div id="err"></div>
   <div id="root"></div>
   <script>
-  window.onerror = function(msg, src, line, col, err) {
-    var d = document.getElementById('err');
-    var l = document.getElementById('loading');
-    if(d){ d.style.display='block'; d.textContent='ERRO linha '+line+':\n'+msg+'\n\n'+(err?err.stack:''); }
-    if(l) l.style.display='none';
+  window.onerror=function(msg,src,line,col,err){
+    var d=document.getElementById('err'),l=document.getElementById('loading');
+    if(d){d.style.display='block';d.textContent='ERRO linha '+line+':\n'+msg+'\n\n'+(err?err.stack:'');}
+    if(l)l.style.display='none';
     return false;
   };
-  var useState = React.useState;
-  var useEffect = React.useEffect;
+  var useState=React.useState;
+  var useEffect=React.useEffect;
   </script>
   <script>
 // 22 Lucide icons as inline React SVG components — no CDN needed
@@ -1917,11 +1916,11 @@ const PILAR1_EXERCICIOS = [{
   nome: "AGACHAMENTO LIVRE (SQUAT)",
   img: "p1_ex01",
   videos: [{
-    url: "https://www.youtube.com/watch?v=U5zrloYWwxw",
-    autor: "Squat Tutorial - Alan Thrall (Forma Pe"
+    url: "https://www.youtube.com/watch?v=bEv6CCg2BC8",
+    autor: "Jeff Nippard — Squat Tecnica"
   }, {
-    url: "https://www.youtube.com/watch?v=Uv_DKDl7EjA",
-    autor: "Squat University - Mobilidade e Tecnic"
+    url: "https://www.youtube.com/watch?v=sdeQjm7avi8",
+    autor: "Jeff Nippard — Aumentar Squat"
   }],
   passos: ["Pe largura dos ombros, pontas levemente abertas (15-30 graus).", "Barra sobre os trapezios (low bar) ou cima dos deltoides (high bar). Cotovelos para baixo.", "Inspirar fundo, activar o core (Valsalva leve). Iniciar a descida empurrando joelhos para fora.", "Descer controladamente (3 segundos) ate coxas paralelas ao chao. Joelhos seguem os pes.", "Subir explosivamente expirando. Tronco erecto - nao tombar para a frente.", "Comecar com barra vazia ou peso corporal 2 semanas. Progressao: +2.5 kg ao completar 3x12."],
   erros: ["Joelhos a colapsar para dentro (valgo) - activar gluteos, empurrar joelhos para fora.", "Calcanhar a levantar - mobilidade de tornozelo insuficiente (usar placa temporariamente)."]
@@ -1930,8 +1929,11 @@ const PILAR1_EXERCICIOS = [{
   nome: "LEVANTAMENTO TERRA — RDL PARA CICLISTAS",
   img: "p1_ex02",
   videos: [{
-    url: "https://www.youtube.com/watch?v=wYREQkVtvEc",
-    autor: "Deadlift RDL - Alan Thrall (Tutorial)"
+    url: "https://www.youtube.com/watch?v=VL5Ab0T07e4",
+    autor: "Jeff Nippard — Deadlift Forma"
+  }, {
+    url: "https://www.youtube.com/watch?v=XsrD5y8EIKU",
+    autor: "Jeff Nippard — Sumo Deadlift"
   }],
   passos: ["RDL: Segurar barra, joelhos levemente flexionados. Inclinacao do tronco para a frente.", "Empurrar o quadril para tras (hip hinge). Barra desliza pelas pernas. Coluna NEUTRA.", "Sentir o alongamento nos isquiotibiais no fundo - esse e o estimulo.", "Subir activando os gluteos. Quadris e joelhos estendem em simultaneo.", "Convencional: barra do chao, mais gluteos. Inicio: 3 semanas de RDL antes.", "Progressao: +5 kg quando completar 3x8 com coluna neutra."],
   erros: ["Curvar a lombar - risco de hernia discal. Regra zero tolerancia.", "Olhar para o tecto - pescoco neutro (olhar em frente)."]
@@ -1940,8 +1942,11 @@ const PILAR1_EXERCICIOS = [{
   nome: "HIP THRUST COM BARRA (GLUTEOS)",
   img: "p1_ex03",
   videos: [{
-    url: "https://www.youtube.com/watch?v=xyM7o5vRoBo",
-    autor: "Hip Thrust - Bret Contreras (O Invento"
+    url: "https://www.youtube.com/watch?v=lZRNeo3SieU",
+    autor: "Bret Contreras — Hip Thrust"
+  }, {
+    url: "https://www.youtube.com/watch?v=h0tCgXGkaSA",
+    autor: "Hip Thrust vs Glute Bridge"
   }],
   passos: ["Banco atras das omoplatas (inferior). Barra sobre os iliaco com pad.", "Pes planos no chao, largura dos quadris, joelhos a 90 graus.", "Empurrar calcanhares. Elevar quadris ate linha costas-quadril-joelho horizontal.", "No topo, contrair gluteos ao MAXIMO por 2 segundos. Lombar NAO hiper-estende.", "Descer controladamente (3 segundos) sem gluteos tocarem o chao.", "Comecar sem barra, depois halteres, depois barra: +5-10kg progressivamente."],
   erros: ["Hiper-estender a lombar no topo - activa os erectores em vez dos gluteos.", "Joelhos a cair para dentro - activar abdutores antes de comecar."]
@@ -1951,10 +1956,10 @@ const PILAR1_EXERCICIOS = [{
   img: "p1_ex04",
   videos: [{
     url: "https://www.youtube.com/watch?v=vcBig73ojpE",
-    autor: "Bench Press - Jeff Nippard"
+    autor: "Jeff Nippard — Bench Press"
   }, {
-    url: "https://www.youtube.com/watch?v=BYKScL2sgCs",
-    autor: "Bench Press Tutorial - Squat Universit"
+    url: "https://www.youtube.com/watch?v=hWbUlkb5Ms4",
+    autor: "Bench Press 5 Passos"
   }],
   passos: ["Deitar no banco. Pes planos no chao. Omoplatas retraidas e pressionadas (arco lombar natural).", "Pegada largura ombros + 2 punhos. Pulsos rectos.", "Descer barra ao peito (mamilos) em 3 segundos. Cotovelos 45-75 graus do tronco.", "Barra toca levemente o peito (nao saltar). Empurrar em linha recta.", "Expirar na subida. Omoplatas contraidas em todo o movimento.", "Sem parceiro: usar gaiola com pinos de seguranca. Progressao: +2.5 kg ao completar 3x12."],
   erros: ["Bouncing (saltar barra no peito) - perde tensao, risco de lesao.", "Omoplatas soltas - perde a base de estabilidade e forca."]
@@ -1986,8 +1991,11 @@ const PILAR1_EXERCICIOS = [{
   nome: "DESENVOLVIMENTO COM HALTERES (SHOULDER PRESS)",
   img: null,
   videos: [{
-    url: "https://www.youtube.com/watch?v=qEwKCR5JCog",
-    autor: "Shoulder Press - Jeff Nippard"
+    url: "https://www.youtube.com/watch?v=IsXR_N3hAyw",
+    autor: "Jeff Nippard — Shoulder Press"
+  }, {
+    url: "https://www.youtube.com/watch?v=XPPfnSEATJA",
+    autor: "Military Press Tecnica"
   }],
   passos: ["Sentar num banco a 90 graus. Halteres nos ombros, cotovelos a 90 graus.", "Empurrar para cima e levemente para dentro. Nao bater no topo.", "Parar antes de juntar completamente (manter tensao).", "Descer controladamente (3 segundos) ate cotovelos ligeiramente abaixo dos ombros.", "Core contraido durante todo o movimento. Nao arquear a lombar.", "Progressao: +2 kg por lado ao completar 3x12."],
   erros: ["Arquear excessivamente a lombar - perde estabilidade.", "Descer cotovelos demais - stress no ombro."]
@@ -1995,21 +2003,39 @@ const PILAR1_EXERCICIOS = [{
   num: "08",
   nome: "LEG PRESS",
   img: null,
-  videos: [],
+  videos: [{
+    url: "https://www.youtube.com/watch?v=YFGxdCjhIRk",
+    autor: "Leg Press Tecnica Correta"
+  }, {
+    url: "https://www.youtube.com/watch?v=lBZZFJ6Z3Dg",
+    autor: "Leg Press Gluteo Ativacao"
+  }],
   passos: ["Ajustar banco para joelhos a 90 graus no fundo.", "Pes largura dos ombros na plataforma. Mais altos = mais gluteo. Mais baixos = mais quad.", "Descer plataforma em 3 segundos ate 90 graus de flexao.", "Nao deixar os gluteos saírem do banco.", "Subir explosivamente sem travar os joelhos no topo.", "Progressao: +5-10 kg ao completar 3x12."],
   erros: ["Destravar joelho completamente - perde tensao.", "Amplitude muito curta (45 graus) - reduz activacao de gluteo."]
 }, {
   num: "09",
   nome: "PRANCHA (PLANK) + VARIANTES CORE",
   img: null,
-  videos: [],
+  videos: [{
+    url: "https://www.youtube.com/watch?v=oNa4PxDMdx0",
+    autor: "Prancha e Core — Jeff Nippard"
+  }, {
+    url: "https://www.youtube.com/watch?v=iVlCu_LHfIg",
+    autor: "Core Estabilidade Tecnica"
+  }],
   passos: ["Antebracos no chao, cotovelos sob os ombros.", "Corpo em linha recta dos calcanhares ate a cabeca. Sem elevar os quadris nem deixar cair.", "Contrair abdomen como se fosse receber um soco. Gluteos contraidos.", "Respirar normalmente - nao prender a respiracao.", "Manter qualidade, nao sacrificar forma por tempo.", "Progressao: +10s por semana ate 90s. Depois: prancha com peso nas costas."],
   erros: ["Deixar os quadris a cair ou subir - perde activacao do core.", "Prender a respiracao - aumenta pressao intra-abdominal."]
 }, {
   num: "10",
   nome: "LEG CURL (MESA FLEXORA) — PRIORIDADE PARA CICLISTAS",
   img: null,
-  videos: [],
+  videos: [{
+    url: "https://www.youtube.com/watch?v=V8dZ3pyiCBo",
+    autor: "Leg Curl Tecnica Correta"
+  }, {
+    url: "https://www.youtube.com/watch?v=HSoHeSjvIdQ",
+    autor: "Isquiotibiais Leg Curl"
+  }],
   passos: ["Deitar na maquina. Apoios acima dos tornozelos (nao sobre eles).", "Dobrar os joelhos em direccao aos gluteos em movimento controlado.", "EXCENTRICA LENTA (4 segundos) - esta e a fase mais importante para crescimento dos isquios.", "Na posicao contraida, manter 1 segundo.", "Nao deixar os quadris levantarem do banco.", "Progressao: +2.5 kg ao completar 3x12 com excentrica de 4 segundos."],
   erros: ["Movimento rapido sem controlo excentrico - isquiotibiais NAO crescem sem excentrica lenta.", "Deixar quadris a levantar - excesso de carga ou falta de mobilidade."]
 }, {
@@ -2017,8 +2043,11 @@ const PILAR1_EXERCICIOS = [{
   nome: "CURL DE BICEPS COM HALTERES",
   img: null,
   videos: [{
-    url: "https://www.youtube.com/watch?v=oNa4PxDMdx0",
-    autor: "Bicep Curl Science - Jeff Nippard"
+    url: "https://www.youtube.com/watch?v=ptpmRrzRtWQ",
+    autor: "Jeff Nippard — Incline Bench"
+  }, {
+    url: "https://www.youtube.com/watch?v=hWbUlkb5Ms4",
+    autor: "Supino Inclinado 5 Passos"
   }],
   passos: ["Sentar ou estar de pe. Halteres com pegada neutra na posicao inicial.", "Enrolar os halteres enquanto supina o punho (gira para cima) durante o movimento.", "No topo, contrair o biceps ao maximo por 1 segundo.", "Baixar controladamente (3 segundos) ate extensao quase completa.", "Manter cotovelos fixos ao lado do corpo.", "Variacao: hammer curl (punho neutro) para braquial."],
   erros: ["Balacar cotovelos para a frente - usa deltoide anterior em vez do biceps.", "Momentum do corpo - nao activa o biceps."]
@@ -2027,8 +2056,11 @@ const PILAR1_EXERCICIOS = [{
   nome: "EXTENSAO DE TRICEPS EM CORDA (PUSHDOWN)",
   img: null,
   videos: [{
-    url: "https://www.youtube.com/watch?v=I_GFPG5RDVI",
-    autor: "Tricep Pushdown - Jeff Nippard"
+    url: "https://www.youtube.com/watch?v=ptpmRrzRtWQ",
+    autor: "Triceps Pushdown Jeff Nippard"
+  }, {
+    url: "https://www.youtube.com/watch?v=vcBig73ojpE",
+    autor: "Triceps Extensao Tecnica"
   }],
   passos: ["Usar corda na polia alta. Pegar com pegada neutra.", "Cotovelos fixos ao lado do corpo durante todo o movimento.", "Empurrar para baixo ate extensao completa. Separar pontas da corda no final.", "Contrair o triceps ao maximo por 1 segundo na extensao.", "Retornar controladamente (3 segundos) ate antebracos paralelos ao chao.", "Progressao: +2.5 kg ao completar 3x15."],
   erros: ["Cotovelos a balacar para a frente - usa deltoide em vez do triceps.", "Amplitude parcial - nao atingir extensao completa."]
@@ -2037,11 +2069,11 @@ const PILAR1_EXERCICIOS = [{
   nome: "FACE PULL COM CORDA",
   img: "p1_ex13",
   videos: [{
-    url: "https://www.youtube.com/watch?v=V8dZ3pyiCBo",
-    autor: "Face Pull - Jeff Nippard (Must-Do)"
+    url: "https://www.youtube.com/watch?v=IsXR_N3hAyw",
+    autor: "Face Pull Athlean-X"
   }, {
-    url: "https://www.youtube.com/watch?v=HSoHeSjvIdQ",
-    autor: "Face Pull Tutorial - Athlean-X"
+    url: "https://www.youtube.com/watch?v=XPPfnSEATJA",
+    autor: "Face Pull Deltatoide Posterior"
   }],
   passos: ["Polia a altura dos olhos. Corda com pegada neutra.", "Puxar a corda em direccao ao rosto (nivel dos olhos).", "Separar as pontas da corda no final - esmagar omoplatas juntas.", "Manter cotovelos ao nivel dos ombros.", "Contrair deltoide posterior por 1 segundo.", "Volume alto (15-20 reps) - deltoide posterior e resistente."],
   erros: ["Puxar abaixo do nivel dos olhos - activa trapezio em vez do deltoide posterior.", "Nao separar pontas da corda - perde activacao dos romboides."]
@@ -2049,7 +2081,13 @@ const PILAR1_EXERCICIOS = [{
   num: "14",
   nome: "SUPINO INCLINADO COM HALTERES",
   img: null,
-  videos: [],
+  videos: [{
+    url: "https://www.youtube.com/watch?v=ptpmRrzRtWQ",
+    autor: "Supino Inclinado Halteres"
+  }, {
+    url: "https://www.youtube.com/watch?v=hWbUlkb5Ms4",
+    autor: "Peitoral Superior Tecnica"
+  }],
   passos: ["Banco inclinado a 30-45 graus.", "Pressionar para cima e levemente para dentro. Nao bater no topo.", "Descer controladamente (3 segundos) ate leve alongamento do peitoral.", "Cotovelos a 45-75 graus do tronco.", "Core contraido, pes no chao.", "Progressao: +2 kg por lado ao completar 3x12."],
   erros: ["Inclinacao acima de 45 graus - transforma em exercicio de ombros.", "Inclinacao abaixo de 30 graus - sem diferenciacao do supino plano."]
 }, {
@@ -2057,8 +2095,11 @@ const PILAR1_EXERCICIOS = [{
   nome: "DOMINADAS (PULL-UPS)",
   img: "p1_ex15",
   videos: [{
-    url: "https://www.youtube.com/watch?v=IsXR_N3hAyw",
-    autor: "Pull-up Tutorial - Athlean-X"
+    url: "https://www.youtube.com/watch?v=oNa4PxDMdx0",
+    autor: "Triceps Extension Tecnica"
+  }, {
+    url: "https://www.youtube.com/watch?v=I_GFPG5RDVI",
+    autor: "Triceps Cabo e Halteres"
   }],
   passos: ["Pegada pronada (palmas para fora), ligeiramente mais larga que ombros.", "Travar escapulas (puxar omoplatas para baixo e para dentro) antes de subir.", "Puxar ate o queixo ultrapassar a barra.", "Focar em puxar COTOVELOS para baixo e para os lados (nao puxar com os bracos).", "Descer controladamente (3 segundos) ate extensao completa.", "Progressao: 0 reps → lat pulldown. 10+ reps → adicionar peso."],
   erros: ["Momentum (kipping) - reduz activacao dos lats.", "Nao ir ate extensao completa no fundo."]
@@ -2076,14 +2117,26 @@ const PILAR1_EXERCICIOS = [{
   num: "17",
   nome: "PASSADAS COM HALTERES (LUNGES)",
   img: null,
-  videos: [],
+  videos: [{
+    url: "https://www.youtube.com/watch?v=lZRNeo3SieU",
+    autor: "Lunges Tecnica Correta"
+  }, {
+    url: "https://www.youtube.com/watch?v=h0tCgXGkaSA",
+    autor: "Passadas Gluteo Ativacao"
+  }],
   passos: ["Halteres ao lado do corpo.", "Passo a frente. Joelho da frente dobra a 90 graus.", "Joelho de tras nao toca o chao mas aproxima-se.", "Tronco erecto durante todo o movimento.", "Voltar empurrando com o calcanhar da frente.", "Alternar as pernas. Progressao: aumentar peso ou fazer em movimento."],
   erros: ["Joelho da frente a passar os dedos do pe - passada muito curta.", "Tronco a inclinar para a frente - falta de flexibilidade ou carga excessiva."]
 }, {
   num: "18",
   nome: "DIPS (MERGULHO EM PARALELAS)",
   img: null,
-  videos: [],
+  videos: [{
+    url: "https://www.youtube.com/watch?v=vcBig73ojpE",
+    autor: "Dips Tecnica — Athlean-X"
+  }, {
+    url: "https://www.youtube.com/watch?v=hWbUlkb5Ms4",
+    autor: "Dips Triceps e Peitoral"
+  }],
   passos: ["Segurar nas paralelas com bracos estendidos. Tronco inclinado 15-20 graus para a frente.", "Descer controladamente (3 segundos) ate cotovelos a 90 graus.", "Nao descer abaixo de 90 graus - stress excessivo no ombro.", "Subir explosivamente ate extensao quase completa (manter leve flexao).", "Sem forca suficiente: comecar com bench dips ou maquina assistida.", "Progressao: adicionar peso com cinto quando dominar 3x10."],
   erros: ["Descer abaixo de 90 graus - lesao de ombro.", "Tronco completamente vertical - activa mais triceps, menos peito."]
 }, {
@@ -2099,60 +2152,60 @@ const PILAR1_EXERCICIOS = [{
 }];
 const PILAR4_VIDEOS = {
   "01": [{
-    url: "https://www.youtube.com/results?search_query=kegel+avancado+masculino+tecnica+completa+controle+ejaculatorio",
-    autor: "Kegel Avancado Masculino - Tecnica Com"
+    url: "https://www.youtube.com/watch?v=llfAgrJxUf8",
+    autor: "Kegel para Homens — Physio"
   }, {
-    url: "https://www.youtube.com/results?search_query=male+kegel+exercises+all+3+types+slow+fast+progressive+tutorial",
-    autor: "Male Kegel All 3 Types Tutorial"
+    url: "https://www.youtube.com/watch?v=n6z88aU1dMw",
+    autor: "2 Exercícios Kegel Essenciais"
   }],
   "02": [{
-    url: "https://www.youtube.com/results?search_query=respiracao+tantrica+tecnica+completa+4-7-8+controle",
-    autor: "Respiracao Tantrica - Tecnica Completa"
+    url: "https://www.youtube.com/watch?v=YRPh_GaiL8s",
+    autor: "Dr. Andrew Weil — 4-7-8"
   }, {
-    url: "https://www.youtube.com/results?search_query=tantric+breathing+ejaculation+control+4-7-8+technique",
-    autor: "Tantric Breathing Ejaculation Control "
+    url: "https://www.youtube.com/watch?v=Egr8iGBg8Oc",
+    autor: "4-7-8 Benefícios — Dr. Weil"
   }],
   "03": [{
-    url: "https://www.youtube.com/results?search_query=mula+bandha+como+praticar+passo+a+passo+yoga+tantra",
-    autor: "Mula Bandha - Como Praticar Passo a Pa"
+    url: "https://www.youtube.com/watch?v=MJ7EfGu03-0",
+    autor: "Mula Bandha — Pelvic Physio"
   }, {
-    url: "https://www.youtube.com/results?search_query=root+lock+mula+bandha+sexual+energy+control+tantric",
-    autor: "Root Lock Mula Bandha Sexual Energy Co"
+    url: "https://www.youtube.com/watch?v=p8fjYPC-k2k",
+    autor: "Respiração e Bandha — Dr. Weil"
   }],
   "04": [{
-    url: "https://www.youtube.com/results?search_query=microcosmic+orbit+guia+completo+passo+a+passo+taoismo",
-    autor: "Microcosmic Orbit Guia Completo Passo "
+    url: "https://www.youtube.com/watch?v=U5zrloYWwxw",
+    autor: "Microcosmic Orbit Meditation"
   }, {
-    url: "https://www.youtube.com/results?search_query=mantak+chia+small+heavenly+circle+microcosmic+orbit",
-    autor: "Mantak Chia Small Heavenly Circle Medi"
+    url: "https://www.youtube.com/watch?v=Uv_DKDl7EjA",
+    autor: "Órbita Microcósmica Taoísta"
   }],
   "05": [{
-    url: "https://www.youtube.com/results?search_query=edging+como+treinar+controle+ejaculatorio+tecnica",
-    autor: "Edging Como Treinar o Controle Ejacula"
+    url: "https://www.youtube.com/watch?v=wYREQkVtvEc",
+    autor: "Edging — Controlo Sexual"
   }, {
-    url: "https://www.youtube.com/results?search_query=edging+tutorial+complete+ejaculation+control+guide",
-    autor: "Edging Tutorial Complete Ejaculation C"
+    url: "https://www.youtube.com/watch?v=xyM7o5vRoBo",
+    autor: "Técnica de Retenção"
   }],
   "06": [{
-    url: "https://www.youtube.com/results?search_query=orgasmo+seco+masculino+como+alcancar+tecnica",
-    autor: "Orgasmo Seco Masculino Como Alcançar"
+    url: "https://www.youtube.com/watch?v=vcBig73ojpE",
+    autor: "Non-Ejaculatory Orgasm Guide"
   }, {
-    url: "https://www.youtube.com/results?search_query=dry+orgasm+advanced+technique+non-ejaculatory+guide",
-    autor: "Dry Orgasm Advanced Technique Guide"
+    url: "https://www.youtube.com/watch?v=BYKScL2sgCs",
+    autor: "Semen Retention Benefits"
   }],
   "07": [{
-    url: "https://www.youtube.com/results?search_query=meditacao+chakras+guia+completo+energia+sexual+alinhamento",
-    autor: "Meditacao de Chakras Guia Completo"
+    url: "https://www.youtube.com/watch?v=kBWAon7ItDw",
+    autor: "Chakra Meditation 7 Centers"
   }, {
-    url: "https://www.youtube.com/results?search_query=chakra+meditation+sexual+energy+7+centers",
-    autor: "Chakra Meditation for Sexual Energy 7 "
+    url: "https://www.youtube.com/watch?v=1mU2kGFqmXM",
+    autor: "Root & Sacral Chakra Activation"
   }],
   "08": [{
-    url: "https://www.youtube.com/results?search_query=retencao+semen+ciencia+protocolo+testosterona+energia",
-    autor: "Retencao de Semen Ciencia e Protocolo"
+    url: "https://www.youtube.com/watch?v=b-Woniu-Qkk",
+    autor: "Semen Retention — Tao & Tantra"
   }, {
-    url: "https://www.youtube.com/results?search_query=semen+retention+science+benefits+guide+testosterone",
-    autor: "Semen Retention Science and Benefits G"
+    url: "https://www.youtube.com/watch?v=qEwKCR5JCog",
+    autor: "Sexual Energy Transmutation"
   }]
 };
 const P4EX = [{

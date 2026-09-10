@@ -4014,10 +4014,7 @@ function ExCard({
   };
   const vol = series.filter(s => s.done).reduce((a, s) => a + (s.reps || 0) * (s.kg || 0), 0);
   const pr = lastW ? epley(lastW.kg, lastW.reps) : null;
-  return /*#__PURE__*/React.createElement(React.Fragment, null, vid && /*#__PURE__*/React.createElement(VideoModal, {
-    url: vid,
-    onClose: () => setVid(null)
-  }), celebrate && /*#__PURE__*/React.createElement(Celebrate, {
+  return /*#__PURE__*/React.createElement(React.Fragment, null, celebrate && /*#__PURE__*/React.createElement(Celebrate, {
     color: A,
     label: `${ex.nome} completo! ${vol}kg`,
     onDone: () => setCelebrate(false)
@@ -4112,7 +4109,7 @@ function ExCard({
     }
   }, ex.videos.map((v, i) => /*#__PURE__*/React.createElement("button", {
     key: i,
-    onClick: () => setVid(v.url),
+    onClick: () => window.open(v.url, '_blank'),
     style: {
       display: "flex",
       alignItems: "center",
@@ -4753,10 +4750,7 @@ function Pilar4({
   });
   const [showEdging, setShowEdging] = useState(false);
   const [celebrate, setCelebrate] = useState(null);
-  if (showRes) return /*#__PURE__*/React.createElement(React.Fragment, null, vid && /*#__PURE__*/React.createElement(VideoModal, {
-    url: vid,
-    onClose: () => setVid(null)
-  }), /*#__PURE__*/React.createElement(ResView, {
+  if (showRes) return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(ResView, {
     onBack: () => setShowRes(false)
   }));
   if (openEx !== null) {
@@ -4816,7 +4810,7 @@ function Pilar4({
       }
     }, vids.map((v, i) => /*#__PURE__*/React.createElement("button", {
       key: i,
-      onClick: () => setVid(v.url),
+      onClick: () => window.open(v.url, '_blank'),
       style: {
         display: "flex",
         alignItems: "center",
@@ -4846,10 +4840,7 @@ function Pilar4({
       }
     }));
   }
-  return /*#__PURE__*/React.createElement(React.Fragment, null, vid && /*#__PURE__*/React.createElement(VideoModal, {
-    url: vid,
-    onClose: () => setVid(null)
-  }), celebrate && /*#__PURE__*/React.createElement(Celebrate, {
+  return /*#__PURE__*/React.createElement(React.Fragment, null, celebrate && /*#__PURE__*/React.createElement(Celebrate, {
     color: A,
     label: celebrate,
     onDone: () => setCelebrate(null)

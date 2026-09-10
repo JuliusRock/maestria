@@ -832,7 +832,6 @@ function ExCard({ex,meta}){
   const vol=series.filter(s=>s.done).reduce((a,s)=>a+(s.reps||0)*(s.kg||0),0);
   const pr=lastW?epley(lastW.kg,lastW.reps):null;
   return <>
-    {vid&&<VideoModal url={vid} onClose={()=>setVid(null)}/>}
     {celebrate&&<Celebrate color={A} label={`${ex.nome} completo! ${vol}kg`} onDone={()=>setCelebrate(false)}/>}
     <div style={{borderRadius:12,overflow:"hidden",background:S2,border:`1px solid ${open?A:TB}`}}>
       <div onClick={()=>setOpen(!open)} style={{display:"flex",alignItems:"center",gap:12,padding:"14px 16px",cursor:"pointer"}}>
@@ -853,7 +852,7 @@ function ExCard({ex,meta}){
           <T sz={12} c={A} w={600}>Última sessão ({lastW.date}): {lastW.kg}kg × {lastW.reps} reps</T>
         </div>}
         <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:12}}>
-          {ex.videos.map((v,i)=><button key={i} onClick={()=>setVid(v.url)} style={{display:"flex",alignItems:"center",gap:6,padding:"10px 14px",borderRadius:10,fontSize:12,fontWeight:600,color:A,background:A+"15",border:`1px solid ${A}55`,cursor:"pointer"}}><PlayCircle size={14}/>{v.autor}</button>)}
+          {ex.videos.map((v,i)=><button key={i} onClick={()=>window.open(v.url,'_blank')} style={{display:"flex",alignItems:"center",gap:6,padding:"10px 14px",borderRadius:10,fontSize:12,fontWeight:600,color:A,background:A+"15",border:`1px solid ${A}55`,cursor:"pointer"}}><PlayCircle size={14}/>{v.autor}</button>)}
         </div>
         <Col style={{gap:6,marginBottom:12}}>
           {ex.passos.map((p,i)=><Row key={i} style={{gap:10}}><T sz={12} w={700} c={A}>{i+1}.</T><T sz={13}>{p}</T></Row>)}
@@ -1035,7 +1034,6 @@ function Pilar4({showRes,setShowRes}){
   const [celebrate,setCelebrate]=useState(null);
 
   if(showRes)return <>
-    {vid&&<VideoModal url={vid} onClose={()=>setVid(null)}/>}
     <ResView onBack={()=>setShowRes(false)}/>
   </>;
 
@@ -1052,14 +1050,13 @@ function Pilar4({showRes,setShowRes}){
       </div>}
       <div style={{borderRadius:12,overflow:"hidden"}}><img src={IMG[ex.img]} alt={ex.nome} style={{width:"100%",display:"block"}}/></div>
       {vids.length>0&&<Row style={{gap:8,flexWrap:"wrap"}}>
-        {vids.map((v,i)=><button key={i} onClick={()=>setVid(v.url)} style={{display:"flex",alignItems:"center",gap:6,padding:"12px 16px",borderRadius:10,fontSize:12,fontWeight:600,color:A,background:A+"15",border:`1px solid ${A}55`,cursor:"pointer"}}><PlayCircle size={15}/>{v.autor}</button>)}
+        {vids.map((v,i)=><button key={i} onClick={()=>window.open(v.url,'_blank')} style={{display:"flex",alignItems:"center",gap:6,padding:"12px 16px",borderRadius:10,fontSize:12,fontWeight:600,color:A,background:A+"15",border:`1px solid ${A}55`,cursor:"pointer"}}><PlayCircle size={15}/>{v.autor}</button>)}
       </Row>}
       <Timer etapas={ex.etapas} ciclos={ex.ciclos} color={A} onComplete={()=>{const campo=ex.bloco.includes("Noct")||ex.bloco.includes("22:")?"n":"m";setKh({...kh,[campo]:true});setCelebrate(ex.nome+" concluído!");}}/>
     </Col>;
   }
 
   return <>
-    {vid&&<VideoModal url={vid} onClose={()=>setVid(null)}/>}
     {celebrate&&<Celebrate color={A} label={celebrate} onDone={()=>setCelebrate(null)}/>}
     <Col style={{gap:16}}>
     <Card accent={A}>
